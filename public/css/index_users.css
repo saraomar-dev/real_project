@@ -1,0 +1,123 @@
+/* background */
+body {
+    padding-top: 70px;
+    background: #f5f7fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* container */
+.table-container {
+    width: 75%;
+    margin: 50px auto;
+}
+
+/* table */
+.custom-table {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+/* header (gradient purple) */
+.custom-table thead {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: #fff;
+}
+
+.custom-table th {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+}
+
+/* body */
+.custom-table td {
+    padding: 10px;
+    font-size: 14px;
+    border-top: 1px solid #eee;
+}
+
+/* hover */
+.custom-table tbody tr {
+    transition: 0.3s;
+}
+
+.custom-table tbody tr:hover {
+    background: #f4f6ff;
+}
+
+/* text */
+.custom-table p {
+    margin: 0;
+}
+
+/* status */
+.status {
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status.active {
+    background: #e6f7ee;
+    color: #28a745;
+}
+
+/* buttons */
+.btn-edit {
+    border: none;
+    background: #f1f3f9;
+    padding: 5px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.3s;
+    margin-right: 5px;
+}
+
+.btn-edit:hover {
+    background: #667eea;
+    color: #fff;
+}
+
+/* header فوق الجدول */
+.users-header {
+    width: 75%;
+    margin: 40px auto 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* العنوان */
+.section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* زرار add */
+.btn-add-user {
+    background: #667eea;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.btn-add-user:hover {
+    background: #667eea;
+    color: #fff;
+    transform: translateY(-2px);
+}
+.add-user-container {
+    width: 75%;
+    margin: 10px auto 20px;
+    display: flex;
+    justify-content: center; /* يخليه في النص */
+}
