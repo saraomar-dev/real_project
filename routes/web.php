@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SeedController;
 use App\Http\Controllers\AuditLogController;
+
+
+use App\Http\Controllers\PlotController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -25,3 +29,7 @@ Route::get('/audit-logs', [AuditLogController::class, 'index'])
     ->middleware('auth')
     ->name('audit.logs');
     Route::resource('seeds', SeedController::class)->middleware('auth');
+
+
+//plot page by--rawan--
+Route::resource('plots', PlotController::class)->middleware('auth');
