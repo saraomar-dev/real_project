@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Traits\Auditable;
+
 class User extends Authenticatable
 {
+    
     use Auditable;
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -18,16 +20,16 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-     public function isAdmin()
-{
-    return $this->role === 'admin';
-}
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
     protected $fillable = [
         'name',
         'email',
         'password',
-         'role',
-         'phone',
+        'role',
+        'phone',
     ];
 
     /**

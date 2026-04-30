@@ -13,11 +13,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('users.show',auth()->user()->id)}}">profile</a>
                 </li>
-                 <li class="nav-item">
+                 @if (auth()->user()->role === 'admin') <li class="nav-item">
                     <a class="nav-link" href="{{route('dashboard.show',auth()->user()->id)}}">dashboard</a>
                 </li>
-                <li class="nav-item">
+                  <li class="nav-item">
                     <a class="nav-link" href="{{route('audit.logs',auth()->user()->id)}}">audit logs</a>
+                </li> @endif
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('seeds.index')}}">seed bank</a>
                 </li>
                  <li class="nav-item">
     <form action="{{ route('logout') }}" method="POST" style="display:inline;">

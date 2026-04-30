@@ -13,43 +13,34 @@
 
 <body>
     <section class="container">
-        <header>edit profile</header>
-        <form action="{{ route('users.update', $user->id) }}" class="form" method='POST'>
+        <header>edit seed</header>
+        <form action="{{ route('seeds.update', $seed->id) }}" class="form" method='POST'>
             @csrf
             @method('PUT')
             <div class="input-box">
                 <label> Name</label>
-                <input type="text" placeholder="Enter full name" name='name' value='{{ $user->name }}'
+                <input type="text" placeholder="Enter name" name='name' value='{{ $seed->name }}'
                     required />
             </div>
             @error('name')
                 <p class="text-danger"> {{ $message }} </p>
             @enderror
             <div class="input-box">
-                <label> Email Address</label>
-                <input type="text" placeholder="Enter email address" name='email' value='{{ $user->email }}'
+                <label> quantity</label>
+                <input type="text" placeholder="Enter quantity" name='quantity' value='{{ $seed->quantity }}'
                     required />
             </div>
-            @error('email')
+            @error('quantity')
                 <p class="text-danger"> {{ $message }} </p>
             @enderror
             <div class="input-box">
-                <label> phone num</label>
-                <input type="text" placeholder="Enter email address" name='phone' value='{{ $user->phone }}' />
+                <label> Expiry Date</label>
+                <input type="date" placeholder="Enter Expiry Date" name='expiry_date'
+                    value='{{ $seed->expiry_date }}' />
             </div>
-            @error('phone')
+            @error('expiry_date')
                 <p class="text-danger"> {{ $message }} </p>
             @enderror
-            @if (auth()->user()->role === 'admin' && auth()->user()->id !== $user->id && $user->role !== 'admin')
-                <div class="input-box">
-                    <label> role</label>
-                    <input type="text" name="role" value="{{ $user->role }}" required />
-                </div>
-                @error('role')
-                    <p class="text-danger"> {{ $message }} </p>
-                @enderror
-            @endif
-
             <button type="submit">Update</button>
         </form>
     </section>
