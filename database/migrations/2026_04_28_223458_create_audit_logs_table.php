@@ -34,6 +34,7 @@ return new class extends Migration
         $table->string('ip')->nullable();
 
         $table->timestamps();
+        $table->decimal('base_price', 10, 2)->default(0.00);
     });
 }
 
