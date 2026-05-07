@@ -34,6 +34,7 @@
                  <td>{{ $user->phone }}</td>
                 <td><span class="status active">{{ $user->role }}</span></td>
                 <td>
+
                     <a href="{{ route('users.show', $user->id) }}" class="btn-edit">Show</a>
                     @if (auth()->user()->role === 'admin')
                     <a href="{{ route('users.edit', $user->id) }}" class="btn-edit">Edit</a> 
@@ -44,6 +45,20 @@
     <button type="submit" class="btn-edit">Delete</button>
   </form>
                     @endif
+     @if(auth()->id() !=$user->id)               
+    <form method="POST" action="/rate">
+
+        @csrf
+
+        <input type="hidden" name="to_user_id" value="{{ $user->id }}">
+
+        <input type="number" name="rating" min="1" max="5" style="width:70px;">
+
+        <button class="btn btn-primary btn-sm">Rate</button>
+
+    </form>
+    @endif
+
                 </td>
             </tr>
         </tbody>
