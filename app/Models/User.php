@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Traits\Auditable;
+use App\Models\VolunteerHour;
 
 class User extends Authenticatable
 {
@@ -54,4 +55,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function shifts()
+{
+    return $this->belongsToMany(Shift::class);
+}
+public function volunteerHours()
+{
+    return $this->hasMany(VolunteerHour::class);
+}
 }
