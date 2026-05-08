@@ -7,30 +7,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Traits\Auditable;
+use App\Models\VolunteerHour;
 
 class User extends Authenticatable
 {
-
-
-
-const ROLE_ADMIN = 'admin';
-const ROLE_MEMBER = 'member';
-
-public function isAdmin()
-{
-    return $this->role === self::ROLE_ADMIN;
-}
-    
     use Auditable;
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+use Notifiable;
+    const ROLE_ADMIN = 'admin';
+    const ROLE_MEMBER = 'member';
+
+    public function isAdmin()
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-  
     protected $fillable = [
         'name',
         'email',
@@ -62,28 +58,36 @@ public function isAdmin()
         ];
     }
 
-
     // المستخدم ممكن يأجر أكتر من أرض
-public function plots()
-{
-    // اليوزر الواحد ممكن يكون عنده كذا أرض (علاقة One-to-Many)
-    return $this->hasMany(Plot::class, 'user_id');
-}
+    public function plots()
+    {
+        return $this->hasMany(Plot::class, 'user_id');
+    }
 
-// الواردن (كمستخدم) ممكن يعمل معاينات كتير
-public function inspections() {
-    return $this->hasMany(Inspection::class);
-}
+    // الواردن يعمل معاينات
+    public function inspections()
+    {
+        return $this->hasMany(Inspection::class);
+    }
 
-public function isWarden()
-{
-    return $this->role === 'warden';
-}
+    public function isWarden()
+    {
+        return $this->role === 'warden';
+    }
 
+    public function sharedPlots()
+    {
+        return $this->hasMany(PlotShare::class, 'shared_with');
+    }
 
-public function sharedPlots() {
-    return $this->hasMany(PlotShare::class, 'shared_with');
-}
+    public function shifts()
+    {
+        return $this->belongsToMany(Shift::class);
+    }
 
-
+    public function volunteerHours()
+    {
+        return $this->hasMany(VolunteerHour::class);
+    }
+    
 }

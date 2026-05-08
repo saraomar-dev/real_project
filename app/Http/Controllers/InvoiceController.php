@@ -98,7 +98,7 @@ public function downloadPDF($id)
     $invoice = \App\Models\Invoice::with(['user', 'plot'])->findOrFail($id);
 
     // بنفتح صفحة بسيطة فيها بيانات الفاتورة قابلة للطباعة
-    return view('invoices.pdf', compact('invoice'));
+    return view('invoices.pdf_template', compact('invoice'));
 }
 
         // فاتورة
