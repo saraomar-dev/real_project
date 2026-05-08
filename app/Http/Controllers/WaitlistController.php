@@ -90,20 +90,33 @@ class WaitlistController extends Controller
         return redirect()->back()->with('success', "Success! Plot #{$plot->plot_number} assigned to {$user->name}. Lease and Invoice created.");
     }
 
-    private function getSortedWaitlist()
-    {
-        return Waitlist::with('user')
-            ->where('status', 'waiting')
-            ->get()
-            ->map(function ($entry) {
-                $residencyDays = now()->diffInDays($entry->user->created_at ?? now());
-                $contributionScore = $entry->user->karma_points ?? 0;
-                $entry->priority_score = $contributionScore + ($residencyDays / 10);
+  private function getSortedWaitlist()
+{
+    return Waitlist::with('user')
+        ->where('status', 'waiting')
+        ->get()
+        ->map(function ($entry) {
+            if (!$entry->user) {
+                $entry->priority_score = 0;
                 return $entry;
-            })
-            ->sortByDesc('priority_score')
-            ->values();
-    }
+            }
+
+            // 1. حساب فرق الأيام (التأكد إنه دايماً موجب)
+            // نستخدم absolute value عشان نضمن إن مفيش سالب لو التاريخ فيه مشكلة
+            $residencyDays = abs(now()->diffInDays($entry->user->created_at));
+
+            // 2. القراءة من عمود "karma" اللي لقيتيه في الداتابيز
+            $contributionScore = $entry->user->karma ?? 0;
+
+            // 3. المعادلة النهائية: (نقاط الكارما) + (أيام العضوية / 10)
+            // استخدمنا round عشان الرقم يطلع نظيف (مثلاً 5.3 بدل 5.2999)
+            $entry->priority_score = round($contributionScore + ($residencyDays / 10), 1);
+
+            return $entry;
+        })
+        ->sortByDesc('priority_score') // الترتيب: الأعلى سكور هو اللي في الأول
+        ->values();
+}
 
     public function destroy($id)
     {

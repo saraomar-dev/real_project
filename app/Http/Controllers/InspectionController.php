@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Inspection;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Plot;
 use Illuminate\Support\Facades\Storage;
 
@@ -50,6 +51,28 @@ public function index()
     public function create(Plot $plot)
 {
     // بنبعت بيانات الأرض للفورم عشان الواردن يعرف هو بيفتش على أنهي أرض
-    return view('warden.inspections.create', compact('plot'));
+    return 
+    
+    
+    view('warden.inspections.create', compact('plot'));
 }
+
+
+
+ // متنسيش السطر ده فوق خالص
+
+public function generateReport()
+{
+    if (auth()->user()->role !== 'admin') {
+        abort(403);
+    }
+
+    $allInspections = \App\Models\Inspection::with('plot.user')->latest()->get();
+    
+    // هنبعت البيانات لصفحة View بسيطة عشان تتحول PDF
+    $pdf = Pdf::loadView('admin.reports.inspections_pdf', compact('allInspections'));
+    
+    return $pdf->download('inspections-report-' . now()->format('Y-m-d') . '.pdf');
+}
+
 }

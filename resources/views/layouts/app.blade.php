@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     {{-- 3. Mazar CSS (لو محتاجة ستايل القالب) --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/main/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     
     @yield('styles')
 </head>

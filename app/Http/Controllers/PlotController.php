@@ -291,6 +291,23 @@ public function showPlantForm(Plot $plot)
     return view('plots.plant', compact('plot', 'seeds'));
 }
 
+public function harvest($id)
+{
+    $plot = \App\Models\Plot::findOrFail($id);
+
+    // حماية: صاحب الأرض بس هو اللي يحصد
+    if ($plot->user_id !== auth()->id()) {
+        return redirect()->back()->with('error', 'You can only harvest your own plots!');
+    }
+
+    // اللوجيك ببساطة: تصفير البذرة عشان الأرض تفضى
+    $plot->update([
+        'seed_id' => null
+    ]);
+
+    return redirect()->back()->with('success', 'Harvest completed! The plot is now ready for new seeds.');
+}
+
 
 
 

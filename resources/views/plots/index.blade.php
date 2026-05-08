@@ -16,7 +16,6 @@
         : null;
 
     $isStaff = $isAdminOrWarden;
-    $hasActivePlot = false; // لو عندك logic بيحسب ده ضيفيه هنا
 @endphp
 
 <div class="page-heading container">
@@ -50,7 +49,7 @@
                 <p class="text-subtitle text-muted">Manage and monitor all available land units.</p>
             </div>
             <div class="col-12 col-md-6 text-end">
-                @if($user && method_exists($user, 'isAdmin') && $user->isAdmin())
+                @if($user && $user->role === 'admin')
                     <a href="{{ route('admin.requests') }}" class="btn btn-warning shadow-sm">
                         <i class="bi bi-bell"></i> Pending: {{ \App\Models\Plot::where('status', 'pending')->count() }}
                     </a>
@@ -80,8 +79,11 @@
                         @endphp
 
                         <div class="mb-2">
-                            @if($plot->user_id == auth()->id())
+                            {{-- حل مشكلة المالك: يظهر فقط لو الحالة rented --}}
+                            @if($plot->user_id == auth()->id() && $plot->status == 'rented')
                                 <span class="badge bg-primary"><i class="bi bi-person-badge"></i> Owner</span>
+                            @elseif($plot->user_id == auth()->id() && $plot->status == 'pending')
+                                <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> My Request (Pending)</span>
                             @elseif($isActualPartner)
                                 <span class="badge bg-info text-white"><i class="bi bi-people"></i> Partner</span>
                             @endif
@@ -97,7 +99,6 @@
                                     <i class="bi bi-lock-fill"></i> Status: Rented
                                 </span>
 
-                                {{-- Monitoring for Admin/Warden --}}
                                 @if($isAdminOrWarden)
                                     <div class="p-2 border rounded bg-light mb-1">
                                         @if($plot->seed_id)
@@ -126,11 +127,12 @@
                     <div class="card-footer d-flex flex-wrap gap-2 bg-transparent border-top-0 pb-3">
                         <a href="{{ route('plots.show', $plot->id) }}" class="btn btn-sm btn-outline-primary flex-grow-1">View Details</a>
 
+                        {{-- رجعنا زرار My Lease زي ما كان --}}
                         @if($plot->status === 'rented' && $user && $user->id == $plot->user_id)
                             <a href="{{ route('leases.index') }}" class="btn btn-sm btn-info text-white flex-grow-1">My Lease</a>
                         @endif
 
-                        @if($plot->status === 'available' && $user && !$isStaff && !$hasActivePlot)
+                        @if($plot->status === 'available' && $user && !$isStaff)
                             <a href="{{ route('plots.show', $plot->id) }}" class="btn btn-sm btn-success flex-grow-1">Rent Now</a>
                         @endif
 
