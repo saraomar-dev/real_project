@@ -1,4 +1,9 @@
 @extends('layouts.app')
+<style>
+    .page-heading {
+        margin-top: 80px; 
+    }
+</style>
 
 @section('content')
 <div class="container mt-5">

@@ -2,65 +2,72 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Traits\Auditable;
-use App\Models\VolunteerHour;
+// شلنا سطر الـ Sanctum من هنا
 
 class User extends Authenticatable
 {
-    
-    use Auditable;
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    // شلنا HasApiTokens من السطر اللي تحت ده
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-        'phone',
+        'name', 'email', 'password', 'role', 'karma',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password', 'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    // علاقات منة (الأراضي والشكاوى)
+    public function plots() {
+        return $this->hasMany(Plot::class);
     }
-    public function shifts()
+
+    public function complaints() {
+        return $this->hasMany(Complaint::class);
+    }
+
+    public function plotShares() {
+        return $this->hasMany(PlotShare::class, 'shared_with');
+    }
+
+    // علاقات روان والتيم (الأدوات والمهام والساعات)
+    public function tasks() {
+        return $this->hasMany(Task::class);
+    }
+
+    public function volunteerHours() {
+        return $this->hasMany(VolunteerHour::class);
+    }
+
+    public function toolReservations() {
+        return $this->hasMany(ToolReservation::class);
+    }
+
+    public function shifts() {
+        return $this->belongsToMany(Shift::class);
+    }
+
+    public function ratings() {
+        return $this->hasMany(Rating::class, 'rated_user_id');
+    }
+
+
+    // دالة للتحقق إذا كان المستخدم أدمن
+public function isAdmin()
 {
-    return $this->belongsToMany(Shift::class);
+    return $this->role === 'admin';
 }
-public function volunteerHours()
+
+// بالمرة ضيفي دي لو احتجتيها للواردن قدام
+public function isWarden()
 {
-    return $this->hasMany(VolunteerHour::class);
+    return $this->role === 'warden';
 }
 }
