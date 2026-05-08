@@ -10,6 +10,16 @@ use App\Traits\Auditable;
 
 class User extends Authenticatable
 {
+
+
+
+const ROLE_ADMIN = 'admin';
+const ROLE_MEMBER = 'member';
+
+public function isAdmin()
+{
+    return $this->role === self::ROLE_ADMIN;
+}
     
     use Auditable;
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -20,10 +30,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
+  
     protected $fillable = [
         'name',
         'email',
@@ -54,4 +61,29 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    // المستخدم ممكن يأجر أكتر من أرض
+public function plots()
+{
+    // اليوزر الواحد ممكن يكون عنده كذا أرض (علاقة One-to-Many)
+    return $this->hasMany(Plot::class, 'user_id');
+}
+
+// الواردن (كمستخدم) ممكن يعمل معاينات كتير
+public function inspections() {
+    return $this->hasMany(Inspection::class);
+}
+
+public function isWarden()
+{
+    return $this->role === 'warden';
+}
+
+
+public function sharedPlots() {
+    return $this->hasMany(PlotShare::class, 'shared_with');
+}
+
+
 }

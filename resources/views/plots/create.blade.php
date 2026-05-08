@@ -1,4 +1,10 @@
 @extends('layouts.app')
+<style>
+    .page-heading {
+        margin-top: 80px; 
+    }
+</style>
+
 
 @section('content')
 <div class="container mt-5">
@@ -7,7 +13,8 @@
             <h3 class="mb-0 fw-bold text-primary">Add New Plot</h3>
         </div>
         <div class="card-body">
-            <form action="{{ route('plots.store') }}" method="POST">
+            <!-- لاحظي إضافة enctype لرفع الملفات -->
+            <form action="{{ route('plots.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -33,6 +40,19 @@
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Sunlight Exposure (%)</label>
                         <input type="number" name="sunlight_exposure" min="0" max="100" class="form-control" placeholder="0-100" required>
+                    </div>
+
+                    <!-- حقل المكان الجديد -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Location Tag</label>
+                        <input type="text" name="location_tag" class="form-control" placeholder="e.g. East Sector / Garden A">
+                    </div>
+
+                    <!-- حقل رفع الصورة الجديد -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Plot Image</label>
+                        <input type="file" name="image" class="form-control" accept="image/*">
+                        <small class="text-muted">Accepted formats: jpg, png, jpeg (Max 2MB)</small>
                     </div>
                 </div>
 

@@ -14,9 +14,7 @@ class SeedController extends Controller
         return view('seeds.index',compact('seeds'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+ 
     public function create()
     {
         return view('seeds.create');
