@@ -7,7 +7,7 @@
 </style>
 
 <div class="container page-heading">
-    <h2 class="mb-4">Allotment Sharing Management (FR-05)</h2>
+    <h2 class="mb-4"> Sharing Management</h2>
 
     @if(auth()->user()->plots->count() > 0)
     <div class="card mb-4 shadow-sm border-0">
